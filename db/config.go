@@ -10,6 +10,8 @@ import (
 type Config interface {
 	Dsn() string
 	DbName() string
+	DBUser() string
+	DBPass() string
 }
 
 // In Go, names starting with an uppercase letter are considered exported, meaning they are accessible from outside the package.
@@ -32,7 +34,7 @@ func NewConfig() Config {
 	//because the config struct is not exported, this function is the only way to create a new config struct
 	var cfg config
 	cfg.dbUser = os.Getenv("DATABASE_USER")
-	cfg.dbPass = os.Getenv("DATABASE_PASS")
+	cfg.dbPass = os.Getenv("DATABASE_PASSWORD")
 	cfg.dbHost = os.Getenv("DATABASE_HOST")
 	cfg.dbName = os.Getenv("DATABASE_NAME")
 	var err error
@@ -64,4 +66,12 @@ func (c *config) DbName() string {
 	// This separation keeps the code clean and organized.
 
 	return c.dbName
+}
+
+func (c *config) DBUser() string {
+	return c.dbUser
+}
+
+func (c *config) DBPass() string {
+	return c.dbPass
 }
